@@ -6,6 +6,7 @@ import random
 import MCTS as mc
 from game import GameState
 from loss import softmax_cross_entropy_with_logits
+from random import choice
 
 import config
 import loggers as lg
@@ -28,6 +29,20 @@ class User():
 		pi[action] = 1
 		value = None
 		NN_value = None
+		return (action, pi, value, NN_value)
+
+class RandomIA():
+	def __init__(self, name, state_size, action_size):
+		self.name = name
+		self.state_size = state_size
+		self.action_size = action_size
+
+	def act(self, state, tau):
+		action = choice(state.allowedActions)
+		pi = np.zeros(self.action_size)
+		pi[action] = 1
+		value = 1
+		NN_value = 1
 		return (action, pi, value, NN_value)
 
 

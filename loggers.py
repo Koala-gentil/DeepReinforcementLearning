@@ -10,7 +10,9 @@ LOGGER_DISABLED = {
 , 'memory':False
 , 'tourney':False
 , 'mcts':False
-, 'model': False}
+, 'model': False
+, 'randomIA': False
+}
 
 
 logger_mcts = setup_logger('logger_mcts', run_folder + 'logs/logger_mcts.log')
@@ -27,4 +29,7 @@ logger_memory.disabled = LOGGER_DISABLED['memory']
 
 logger_model = setup_logger('logger_model', run_folder + 'logs/logger_model.log')
 logger_model.disabled = LOGGER_DISABLED['model']
+ 
+logger_randomIA = setup_logger('logger_randomIA', run_folder + 'logs/logger_randomIA.log')
+logger_randomIA.disabled = LOGGER_DISABLED['randomIA']
  
