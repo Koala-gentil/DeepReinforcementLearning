@@ -7,6 +7,10 @@ from game import Game, GameState
 from model import Residual_CNN
 
 from agent import Agent, User, RandomIA
+from settings import run_folder, run_archive_folder
+from keras.models import Sequential, load_model, Model
+from loss import softmax_cross_entropy_with_logits
+
 
 import config
 
@@ -46,6 +50,12 @@ def playMatchesBetweenVersions(env, run_version, player1version, player2version,
 
     return (scores, memory, points, sp_scores)
 
+def loadAgent(env, config, name):
+    agent_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, env.input_shape,   env.action_size, config.HIDDEN_CNN_LAYERS)
+    agent_network = load_model( "./models/" + name + '.h5', custom_objects={'softmax_cross_entropy_with_logits': softmax_cross_entropy_with_logits})
+    agent_NN.model.set_weights(agent_network.get_weights())
+    agent = Agent(name, env.state_size, env.action_size, config.MCTS_SIMS, config.CPUCT, agent_NN)
+    return agent
 
 def playMatches(player1, player2, EPISODES, logger, turns_until_tau0, memory = None, goes_first = 0):
 

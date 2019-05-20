@@ -5,18 +5,18 @@ class Game:
 
     def __init__(self):
         self.currentPlayer = 1 # 1 = bleu, -1 = rouge
-        self.gameState = GameState(np.zeros(16, dtype=np.int), self.currentPlayer) # 4 x 4 board
-        self.actionSpace = np.zeros(16, dtype=np.int)
+        self.gameState = GameState(np.zeros(36, dtype=np.int), self.currentPlayer) # 6 x 6 board
+        self.actionSpace = np.zeros(36, dtype=np.int)
         self.pieces = {'1': 'B', '0': '-', '-1': 'R'}
-        self.grid_shape = (4, 4)
-        self.input_shape = (2, 4, 4)
+        self.grid_shape = (6, 6)
+        self.input_shape = (2, 6, 6)
         self.name = 'hex'
         self.state_size = len(self.gameState.binary)
         self.action_size = len(self.actionSpace)
         
     def reset(self):
         self.currentPlayer = 1 # 1 = bleu, -1 = rouge
-        self.gameState = GameState(np.zeros(16, dtype=np.int), self.currentPlayer) # 4 x 4 board
+        self.gameState = GameState(np.zeros(36, dtype=np.int), self.currentPlayer) # 6 x 6 board
         return self.gameState
     
     def step(self, action):
@@ -52,7 +52,7 @@ class GameState:
 
 
     def _allowedActions(self):
-        return [i for i in range(16) if self.board[i] == 0] # index where cell is empty
+        return [i for i in range(36) if self.board[i] == 0] # index where cell is empty
 
     def _binary(self):
         currentplayer_position = np.zeros(len(self.board), dtype=np.int)
@@ -81,10 +81,10 @@ class GameState:
 
     def _getNeighbors(self, index):
         for dir in self._DIRECTIONS:
-            x = (index % 4) + dir[0]
-            y = (index // 4) + dir[1]
-            if x >= 0 and x < 4 and y >= 0 and y < 4:
-                yield y * 4 + x
+            x = (index % 6) + dir[0]
+            y = (index // 6) + dir[1]
+            if x >= 0 and x < 6 and y >= 0 and y < 6:
+                yield y * 6 + x
 
 
     def _checkForEndGame(self):
@@ -92,27 +92,27 @@ class GameState:
         # TODO: ne pas vérifier la victoire du joueur courant ???
         if self.playerTurn == -1 :
             # check blue player (1) (ligne de gauche a droite)
-            seen = np.zeros(16, dtype=np.int)
-            pile = [i for i in range(0, 16, 4) if self.board[i] == 1] # flood fill algo
+            seen = np.zeros(36, dtype=np.int)
+            pile = [i for i in range(0, 36, 6) if self.board[i] == 1] # flood fill algo
             seen[pile] = 1
             while len(pile) > 0 :
                 index = pile.pop(0)
                 for neighbor in self._getNeighbors(index):
                     if self.board[neighbor] == 1 and seen[neighbor] == 0:
-                        if neighbor % 4 == 3: # atteint le côté droit
+                        if neighbor % 6 == 5: # atteint le côté droit
                             return 1
                         seen[neighbor] = 1
                         pile.append(neighbor)
         else :
             # check red player (-1) (ligne de haut en bas)
-            seen = np.zeros(16, dtype=np.int)
-            pile = [i for i in range(4) if self.board[i] == -1] # flood fill algo
+            seen = np.zeros(36, dtype=np.int)
+            pile = [i for i in range(6) if self.board[i] == -1] # flood fill algo
             seen[pile] = 1
             while len(pile) > 0 :
                 index = pile.pop(0)
                 for neighbor in self._getNeighbors(index):
                     if self.board[neighbor] == -1 and seen[neighbor] == 0:
-                        if neighbor // 4 == 3: # atteint le bas
+                        if neighbor // 6 == 5: # atteint le bas
                             return 1
                         seen[neighbor] = 1
                         pile.append(neighbor)
@@ -146,12 +146,12 @@ class GameState:
         return (newState, value, done)
 
     def render(self, logger):
-        for r in range(4):
-            logger.info([self.pieces[str(x)] for x in self.board[4*r : (4*r + 4)]])
+        for r in range(6):
+            logger.info([self.pieces[str(x)] for x in self.board[6*r : (6*r + 6)]])
         logger.info('--------------')
 
     
     def display_console(self):
-        for r in range(4):
-            print([self.pieces[str(x)] for x in self.board[4*r : (4*r + 4)]])
+        for r in range(6):
+            print([self.pieces[str(x)] for x in self.board[6*r : (6*r + 6)]])
         print('--------------')
