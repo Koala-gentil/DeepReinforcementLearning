@@ -10,7 +10,7 @@ LOGGER_DISABLED = {
 , 'memory':False
 , 'tourney':False
 , 'mcts':False
-, 'model': False
+, 'model': True
 , 'randomIA': False
 }
 

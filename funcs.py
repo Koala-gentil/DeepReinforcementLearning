@@ -50,9 +50,9 @@ def playMatchesBetweenVersions(env, run_version, player1version, player2version,
 
     return (scores, memory, points, sp_scores)
 
-def loadAgent(env, config, name):
+def loadAgent(env, config, name, file):
     agent_NN = Residual_CNN(config.REG_CONST, config.LEARNING_RATE, env.input_shape,   env.action_size, config.HIDDEN_CNN_LAYERS)
-    agent_network = load_model( "./models/" + name + '.h5', custom_objects={'softmax_cross_entropy_with_logits': softmax_cross_entropy_with_logits})
+    agent_network = load_model( "./models/" + file + '.h5', custom_objects={'softmax_cross_entropy_with_logits': softmax_cross_entropy_with_logits})
     agent_NN.model.set_weights(agent_network.get_weights())
     agent = Agent(name, env.state_size, env.action_size, config.MCTS_SIMS, config.CPUCT, agent_NN)
     return agent

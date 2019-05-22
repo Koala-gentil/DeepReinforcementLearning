@@ -1,7 +1,7 @@
 #### SELF PLAY
-EPISODES = 30
+EPISODES = 15
 MCTS_SIMS = 50
-MEMORY_SIZE = 30000
+MEMORY_SIZE = 15000
 TURNS_UNTIL_TAU0 = 10 # turn on which it starts playing deterministically
 CPUCT = 1
 EPSILON = 0.2
@@ -17,7 +17,7 @@ MOMENTUM = 0.9
 TRAINING_LOOPS = 10
 
 HIDDEN_CNN_LAYERS = [
-	{'filters':75, 'kernel_size': (4,4)}
+	{'filters':75, 'kernel_size': (6,6)}
 	 , {'filters':75, 'kernel_size': (4,4)}
 	 , {'filters':75, 'kernel_size': (4,4)}
 	 , {'filters':75, 'kernel_size': (4,4)}
@@ -26,5 +26,5 @@ HIDDEN_CNN_LAYERS = [
 	]
 
 #### EVALUATION
-EVAL_EPISODES = 20
+EVAL_EPISODES = 25
 SCORING_THRESHOLD = 1.3
